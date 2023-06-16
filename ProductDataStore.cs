@@ -4,12 +4,12 @@ namespace PizzaGoAPI
 {
     public class ProductDataStore
     {
-        public List<Product> Pizzas { get; set; }
+        public List<Product> Products { get; set; }
 
         public static ProductDataStore Current { get; } = new ProductDataStore();
         public ProductDataStore()
         {
-            Pizzas = new List<Product>()
+            Products = new List<Product>()
             {
                 new Product()
                 {
