@@ -9,11 +9,7 @@ namespace PizzaGoAPI.Controllers
         [HttpGet]
         public IActionResult GetProducts()
         {
-            return new JsonResult(new List<object>
-            {
-                new {id=1, Name="Pepperoni"},
-                new {id=2, Name="Pizza with Pineapple"}
-            });
+            return new JsonResult(ProductDataStore.Current.Pizzas);
         }
     }
 }
