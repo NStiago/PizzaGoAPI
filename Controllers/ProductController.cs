@@ -1,26 +1,24 @@
 ﻿using Microsoft.AspNetCore.Mvc;
+using PizzaGoAPI.Models;
 
 namespace PizzaGoAPI.Controllers
 {
     [ApiController]
-    [Route("api/products")]
+    [Route("api/categories/{categoryId}/products")]
     public class ProductController : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetProducts()
+        public ActionResult<IEnumerable<Product>> GetProducts()
         {
-            var result = new JsonResult(ProductDataStore.Current.Products);
+            var result;
             return result;
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetProduct(int id) 
+        public ActionResult<Product> GetProduct(int id) 
         {
-            var productToReturn = ProductDataStore.Current.Products.FirstOrDefault(x => x.Id == id);
-
-            if(productToReturn==null)
-                return NotFound();
-            return Ok(productToReturn);
+            var result;
+            return result;
         }
 
     }
