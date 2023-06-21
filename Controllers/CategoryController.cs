@@ -1,5 +1,6 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using PizzaGoAPI.Models;
 
 namespace PizzaGoAPI.Controllers
 {
@@ -8,14 +9,14 @@ namespace PizzaGoAPI.Controllers
     public class CategoryController : ControllerBase
     {
         [HttpGet]
-        public IActionResult GetCategories()
+        public ActionResult<IEnumerable<Category>> GetCategories()
         {
             var result = new JsonResult(CategoryDataStore.Current.Categories);
             return result;
         }
 
         [HttpGet("{id}")]
-        public IActionResult GetCategory(int id)
+        public ActionResult<Category> GetCategory(int id)
         {
             var categoryToReturn = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == id);
 

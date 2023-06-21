@@ -7,7 +7,7 @@
         public int? Price { get; set; }
         public string? Description { get; set; }
         public string? ImageUrl { get; set; }
-        public ICollection<Ingridient> Ingridients { get; set; } = new List<Ingridient>();
+        public ICollection<AddedIngridient> AddedIngridients { get; set; } = new List<AddedIngridient>();
 
     }
 }
