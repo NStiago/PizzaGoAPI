@@ -7,19 +7,30 @@ namespace PizzaGoAPI.Controllers
     [Route("api/categories/{categoryId}/products")]
     public class ProductController : ControllerBase
     {
-        //[HttpGet]
-        //public ActionResult<IEnumerable<Product>> GetProducts()
-        //{
-        //    var result;
-        //    return result;
-        //}
+        [HttpGet]
+        public ActionResult<IEnumerable<Product>> GetProducts(int categoryId)
+        {
+            var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
 
-        //[HttpGet("{id}")]
-        //public ActionResult<Product> GetProduct(int id)
-        //{
-        //    var result;
-        //    return result;
-        //}
+            if (category == null)
+                return NotFound();
+            return Ok(category.Products);
+        }
+
+        [HttpGet("{productId}")]
+        public ActionResult<Product> GetProduct(int categoryId, int productId)
+        {
+            var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
+
+            if (category == null)
+                return NotFound();
+            //поиск продукта
+            var product = category.Products.FirstOrDefault(x => x.Id == productId);
+            if (product == null)
+                return NotFound();
+
+            return product;
+        }
 
     }
 }
