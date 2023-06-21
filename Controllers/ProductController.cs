@@ -11,20 +11,21 @@ namespace PizzaGoAPI.Controllers
         public ActionResult<IEnumerable<Product>> GetProducts(int categoryId)
         {
             var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
-
             if (category == null)
                 return NotFound();
+
             return Ok(category.Products);
         }
 
         [HttpGet("{productId}")]
         public ActionResult<Product> GetProduct(int categoryId, int productId)
         {
+            //получение категории
             var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
 
             if (category == null)
                 return NotFound();
-            //поиск продукта
+            //получение продукта
             var product = category.Products.FirstOrDefault(x => x.Id == productId);
             if (product == null)
                 return NotFound();
