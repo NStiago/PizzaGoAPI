@@ -1,6 +1,6 @@
 ﻿namespace PizzaGoAPI.Models
 {
-    public class CategorySize
+    public class CategorySizeDTO
     {
         public int Id { get; set; }
         public string Name { get; set; }

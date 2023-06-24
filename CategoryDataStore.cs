@@ -4,34 +4,34 @@ namespace PizzaGoAPI
 {
     public class CategoryDataStore
     {
-        public List<Category> Categories { get; set; }
+        public List<CategoryDTO> Categories { get; set; }
 
         public static CategoryDataStore Current { get; } = new CategoryDataStore();
         public CategoryDataStore()
         {
-            Categories = new List<Category>()
+            Categories = new List<CategoryDTO>()
             {
-               new Category()
+               new CategoryDTO()
                {
                    Id=1,
                    Name = "Pizza",
-                   Products = new List<Product>()
+                   Products = new List<ProductDTO>()
                    {
-                        new Product()
+                        new ProductDTO()
                         {
                             Id = 1,
                             Name = "Pepperoni",
                             Price=200,
                             Description = "best pizza"
                         },
-                        new Product()
+                        new ProductDTO()
                         {
                             Id = 2,
                             Name = "Pizza with Pineapple",
                             Price=100,
                             Description = "not good pizza"
                         },
-                        new Product()
+                        new ProductDTO()
                         {
                             Id = 3,
                             Name = "4 cheeses",
@@ -40,13 +40,13 @@ namespace PizzaGoAPI
                         }
                    }
                },
-               new Category()
+               new CategoryDTO()
                {
                    Id=2,
                    Name = "Dessert",
-                   Products = new List<Product>()
+                   Products = new List<ProductDTO>()
                    {
-                       new Product
+                       new ProductDTO
                        {
                            Id=4,
                            Name = "Chocolate cake",
@@ -54,13 +54,13 @@ namespace PizzaGoAPI
                        }
                    }
                },
-               new Category()
+               new CategoryDTO()
                {
                    Id=3,
                    Name = "Drink",
-                   Products = new List<Product>()
+                   Products = new List<ProductDTO>()
                    {
-                       new Product
+                       new ProductDTO
                        {
                            Id=5,
                            Name = "Coca cola",

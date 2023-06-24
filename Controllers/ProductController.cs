@@ -8,7 +8,7 @@ namespace PizzaGoAPI.Controllers
     public class ProductController : ControllerBase
     {
         [HttpGet]
-        public ActionResult<IEnumerable<Product>> GetProducts(int categoryId)
+        public ActionResult<IEnumerable<ProductDTO>> GetProducts(int categoryId)
         {
             var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
             if (category == null)
@@ -18,7 +18,7 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpGet("{productId}")]
-        public ActionResult<Product> GetProduct(int categoryId, int productId)
+        public ActionResult<ProductDTO> GetProduct(int categoryId, int productId)
         {
             //получение категории
             var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);

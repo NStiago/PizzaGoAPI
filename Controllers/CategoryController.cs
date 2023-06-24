@@ -17,14 +17,14 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Category>> GetCategories()
+        public ActionResult<IEnumerable<CategoryDTO>> GetCategories()
         {
             var result = new JsonResult(CategoryDataStore.Current.Categories);
             return result;
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Category> GetCategory(int id)
+        public ActionResult<CategoryDTO> GetCategory(int id)
         {
             var categoryToReturn = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == id);
 
