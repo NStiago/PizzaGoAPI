@@ -23,7 +23,7 @@ namespace PizzaGoAPI
             builder.Services.AddSwaggerGen();
             // регистрация контекста базы данных
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
-            builder.Services.AddDbContext<PizzaAppContext>(options=> options.UseSqlServer(connectionString));
+            builder.Services.AddDbContext<PizzaAppContext>(options => options.UseSqlServer(connectionString));
             //регистрация сендера
 #if DEBUG
             builder.Services.AddScoped<IMailService,LocalMailService>();

@@ -9,9 +9,14 @@ namespace PizzaGoAPI.DBContext
         public DbSet<Product> Products { get; set; }
         public DbSet<CategorySize> CategorySizes { get; set; }
 
-        public PizzaAppContext(DbContextOptions<PizzaAppContext> options) : base(options) 
+        public PizzaAppContext(DbContextOptions<PizzaAppContext> options) : base(options)
         {
-            
+            //Database.EnsureCreated();
+        }
+        protected override void OnModelCreating(ModelBuilder modelBuilder)
+        {
+
+
         }
     }
 }
