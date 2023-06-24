@@ -34,9 +34,11 @@ namespace PizzaGoAPI.DBContext
                 new { Id = 1, Name = "Маленькая", Capacity = 25.0, CategoryId = 1 },
                 new { Id = 2, Name = "Средняя", Capacity = 30.0, CategoryId = 1 },
                 new { Id = 3, Name = "Большая", Capacity = 35.0, CategoryId = 1 },
-                new { Id = 4, Name = "Маленький", Capacity = 0.33, CategoryId = 3 },
-                new { Id = 5, Name = "Средний", Capacity = 0.5, CategoryId = 3 },
-                new { Id = 6, Name = "Большой", Capacity = 1.0, CategoryId = 3 }
+                new { Id = 4, Name = "Маленький кусочек", Capacity = 100.0, CategoryId = 2 },
+                new { Id = 5, Name = "Большой кусочек", Capacity = 250.0, CategoryId = 2 },
+                new { Id = 6, Name = "Маленький", Capacity = 0.33, CategoryId = 3 },
+                new { Id = 7, Name = "Средний", Capacity = 0.5, CategoryId = 3 },
+                new { Id = 8, Name = "Большой", Capacity = 1.0, CategoryId = 3 }
                 );
 
             modelBuilder.Entity<AddedIngridient>().HasData(
