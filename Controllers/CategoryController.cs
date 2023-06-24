@@ -1,6 +1,7 @@
 ﻿using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PizzaGoAPI.Models;
+using PizzaGoAPI.Services.MailServece;
 
 namespace PizzaGoAPI.Controllers
 {
@@ -8,6 +9,13 @@ namespace PizzaGoAPI.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
+        //временное использование сервиса, будет корректировка на CUD операции при использовании EF
+        private readonly IMailService _mailService;
+        public CategoryController(IMailService mailService)
+        {
+            _mailService = mailService;
+        }
+
         [HttpGet]
         public ActionResult<IEnumerable<Category>> GetCategories()
         {
@@ -22,6 +30,9 @@ namespace PizzaGoAPI.Controllers
 
             if (categoryToReturn == null)
                 return NotFound();
+
+            //отправка сообщения при запросе категории
+            _mailService.Send("sementiago", $"sending message from CategoryController and GetCategory with id: {id}");
             return Ok(categoryToReturn);
         }
     }
