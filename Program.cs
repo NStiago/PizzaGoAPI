@@ -1,5 +1,6 @@
 
 using Microsoft.AspNetCore.Builder;
+using PizzaGoAPI.Services.MailServece;
 
 namespace PizzaGoAPI
 {
@@ -18,7 +19,11 @@ namespace PizzaGoAPI
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
             builder.Services.AddSwaggerGen();
-
+#if DEBUG
+            builder.Services.AddScoped<IMailService,LocalMailService>();
+#else
+            builder.Services.AddScoped<IMailService,CloudMailService>();
+#endif
             var app = builder.Build();
 
             // Configure the HTTP request pipeline.
