@@ -1,6 +1,8 @@
-﻿namespace PizzaGoAPI.DataAccess.Interfaces
+﻿using PizzaGoAPI.Entities;
+
+namespace PizzaGoAPI.DataAccess.Interfaces
 {
-    public interface IProductRepository
+    public interface IProductRepository:IRepository<Product>
     {
     }
 }
