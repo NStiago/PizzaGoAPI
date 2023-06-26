@@ -49,7 +49,7 @@ namespace PizzaGoAPI.DataAccess.Repositories
             return await _dbSet.ToListAsync();
         }
 
-        public async Task<T> GetAsync(int id)
+        public async Task<T?> GetAsync(int id)
         {
             return await _dbSet.FindAsync(id);
         }
