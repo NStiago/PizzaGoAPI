@@ -5,7 +5,7 @@
         IEnumerable<T> GetAll();
         Task<IEnumerable<T>> GetAllAsync();
         T Get(int id);
-        Task<T> GetAsync(int id);
+        Task<T?> GetAsync(int id);
         void Create(T entity);
         void CreateAsync(T entity);
         void Update(T entity);
