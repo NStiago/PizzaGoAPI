@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using PizzaGoAPI.DataAccess.Interfaces;
 using PizzaGoAPI.DataAccess.Repositories;
 using PizzaGoAPI.DBContext;
+using PizzaGoAPI.Entities;
 using PizzaGoAPI.Services.MailServece;
 
 namespace PizzaGoAPI
@@ -26,7 +27,10 @@ namespace PizzaGoAPI
             // регистрация контекста базы данных
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<PizzaAppContext>(options => options.UseSqlServer(connectionString));
-
+            //регистрация репозиториев
+            builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
             //регистрация сендера
 #if DEBUG
             builder.Services.AddScoped<IMailService,LocalMailService>();
