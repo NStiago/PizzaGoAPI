@@ -21,10 +21,6 @@ namespace PizzaGoAPI.DataAccess.Repositories
         {
             _context.SaveChanges();
         }
-        public void SaveAsync()
-        {
-            _context.SaveChangesAsync();
-        }
 
         public virtual void Dispose(bool disposing)
         {

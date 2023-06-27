@@ -29,8 +29,8 @@ namespace PizzaGoAPI
             builder.Services.AddDbContext<PizzaAppContext>(options => options.UseSqlServer(connectionString));
             //регистрация репозиториев
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
-            builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            //builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            //builder.Services.AddScoped<IProductRepository, ProductRepository>();
             //регистрация сендера
 #if DEBUG
             builder.Services.AddScoped<IMailService,LocalMailService>();
