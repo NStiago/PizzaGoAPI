@@ -10,6 +10,7 @@ namespace PizzaGoAPI.DataAccess.Interfaces
         Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
         T Get(int id);
         Task<T?> GetAsync(int id);
+        Task<T?> GetAsync(int id, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null);
         void Create(T entity);
         void CreateAsync(T entity);
         void Update(T entity);

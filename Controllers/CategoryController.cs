@@ -15,7 +15,6 @@ namespace PizzaGoAPI.Controllers
     [ApiController]
     public class CategoryController : ControllerBase
     {
-        //временное использование сервиса, будет корректировка на CUD операции при использовании EF
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
@@ -34,7 +33,7 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public ActionResult<Category> GetCategory(int id)
+        public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
         {
             var categoryToReturn = _unitOfWork.GetRepository<Category>().Get(id);
 
@@ -43,7 +42,7 @@ namespace PizzaGoAPI.Controllers
 
             //отправка сообщения при запросе категории
             _mailService.Send("sementiago", $"sending message from CategoryController and GetCategory with id: {id}");
-            return Ok(categoryToReturn);
+            return Ok(_mapper.Map<CategoryDTO>(categoryToReturn));
         }
     }
 }
