@@ -7,31 +7,31 @@ namespace PizzaGoAPI.Controllers
     [Route("api/categories/{categoryId}/products")]
     public class ProductController : ControllerBase
     {
-        [HttpGet]
-        public ActionResult<IEnumerable<ProductDTO>> GetProducts(int categoryId)
-        {
-            var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
-            if (category == null)
-                return NotFound();
+        //[HttpGet]
+        //public ActionResult<IEnumerable<ProductDTO>> GetProducts(int categoryId)
+        //{
+        //    var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
+        //    if (category == null)
+        //        return NotFound();
 
-            return Ok(category.Products);
-        }
+        //    return Ok(category.Products);
+        //}
 
-        [HttpGet("{productId}")]
-        public ActionResult<ProductDTO> GetProduct(int categoryId, int productId)
-        {
-            //получение категории
-            var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
+        //[HttpGet("{productId}")]
+        //public ActionResult<ProductDTO> GetProduct(int categoryId, int productId)
+        //{
+        //    //получение категории
+        //    var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
 
-            if (category == null)
-                return NotFound();
-            //получение продукта
-            var product = category.Products.FirstOrDefault(x => x.Id == productId);
-            if (product == null)
-                return NotFound();
+        //    if (category == null)
+        //        return NotFound();
+        //    //получение продукта
+        //    var product = category.Products.FirstOrDefault(x => x.Id == productId);
+        //    if (product == null)
+        //        return NotFound();
 
-            return product;
-        }
+        //    return product;
+        //}
 
     }
 }

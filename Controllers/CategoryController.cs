@@ -23,10 +23,19 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpGet]
-        public ActionResult<IEnumerable<Category>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryDTOWithoutChild>>> GetCategories()
         {
-            var result = new JsonResult(_unitOfWork.GetRepository<Category>().GetAll());
-            return result;
+            var categoryEntities = await _unitOfWork.GetRepository<Category>().GetAllAsync();
+            var result = new List<CategoryDTOWithoutChild>();
+            foreach(var category in categoryEntities)
+            {
+                result.Add(new CategoryDTOWithoutChild
+                {
+                    Id = category.Id,
+                    Name = category.Name,
+                });
+            }
+            return Ok(result);
         }
 
         [HttpGet("{id}")]
