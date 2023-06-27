@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using PizzaGoAPI.DataAccess.Interfaces;
 using PizzaGoAPI.DataAccess.Repositories;
@@ -16,26 +17,19 @@ namespace PizzaGoAPI.Controllers
         //временное использование сервиса, будет корректировка на CUD операции при использовании EF
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
-        public CategoryController(IMailService mailService, PizzaAppContext context)
+        private readonly IMapper _mapper;
+        public CategoryController(IMailService mailService, PizzaAppContext context, IMapper mapper)
         { 
             _mailService = mailService;
             _unitOfWork = new UnitOfWork(context);
+            _mapper = mapper;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDTOWithoutChild>>> GetCategories()
         {
             var categoryEntities = await _unitOfWork.GetRepository<Category>().GetAllAsync();
-            var result = new List<CategoryDTOWithoutChild>();
-            foreach(var category in categoryEntities)
-            {
-                result.Add(new CategoryDTOWithoutChild
-                {
-                    Id = category.Id,
-                    Name = category.Name,
-                });
-            }
-            return Ok(result);
+            return Ok(_mapper.Map<IEnumerable<CategoryDTOWithoutChild>>(categoryEntities));
         }
 
         [HttpGet("{id}")]
