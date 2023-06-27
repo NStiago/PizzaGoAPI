@@ -72,12 +72,7 @@ namespace PizzaGoAPI.DataAccess.Repositories
 
         public async Task<T?> GetAsync(int id, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
         {
-            IQueryable<T> query = _dbSet;
-            if (include is not null)
-            {
-                query = include(query);
-            }
-            return await query.Fi
+            throw new NotImplementedException();
         }
 
         public void Update(T entity)
