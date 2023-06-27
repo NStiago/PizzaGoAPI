@@ -33,9 +33,9 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
+        public async Task<ActionResult<CategoryDTO>> GetCategory(int id, bool includeProduct=false)
         {
-            var categoryToReturn = _unitOfWork.GetRepository<Category>().Get(id);
+            var categoryToReturn = await _unitOfWork.GetRepository<Category>().GetAsync(id);
 
             if (categoryToReturn == null)
                 return NotFound();
