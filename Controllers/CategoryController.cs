@@ -36,7 +36,6 @@ namespace PizzaGoAPI.Controllers
         public async Task<IActionResult> GetCategory(int id, bool includeProduct=false)
         {
             var categoryToReturn = _unitOfWork.Categories.GetAsync(id,includeProduct).Result;
-
             if (categoryToReturn == null)
                 return NotFound();
 
