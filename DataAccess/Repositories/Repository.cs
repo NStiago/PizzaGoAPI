@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.EntityFrameworkCore.Query;
 using PizzaGoAPI.DataAccess.Interfaces;
 using PizzaGoAPI.DBContext;
 
@@ -47,6 +48,21 @@ namespace PizzaGoAPI.DataAccess.Repositories
         public async Task<IEnumerable<T>> GetAllAsync()
         {
             return await _dbSet.ToListAsync();
+        }
+
+        public async Task<IEnumerable<T>> GetAllAsync(Func<IQueryable<T>, IOrderedQueryable<T>>? orderBy = null, Func<IQueryable<T>, IIncludableQueryable<T, object>>? include = null)
+        {
+            IQueryable<T> query = _dbSet;
+            if (include is not null)
+            {
+                query = include(query);
+            }
+            if (orderBy is not null)
+            {
+                return await orderBy(query).ToListAsync();
+            }
+            return await query.ToListAsync();
+
         }
 
         public async Task<T?> GetAsync(int id)

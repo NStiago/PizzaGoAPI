@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using PizzaGoAPI.DataAccess.Interfaces;
 using PizzaGoAPI.DataAccess.Repositories;
 using PizzaGoAPI.DBContext;
@@ -28,7 +29,7 @@ namespace PizzaGoAPI.Controllers
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDTOWithoutChild>>> GetCategories()
         {
-            var categoryEntities = await _unitOfWork.GetRepository<Category>().GetAllAsync();
+            var categoryEntities = await _unitOfWork.GetRepository<Category>().GetAllAsync(include: x=>x.Include(z=>z.Products));
             return Ok(_mapper.Map<IEnumerable<CategoryDTOWithoutChild>>(categoryEntities));
         }
 
