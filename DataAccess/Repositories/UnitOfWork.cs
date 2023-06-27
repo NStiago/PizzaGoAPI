@@ -12,7 +12,7 @@ namespace PizzaGoAPI.DataAccess.Repositories
             _context = context;
         }
 
-        public IRepository<T> GetRepository<T>() where T : class
+        public IGenericRepository<T> GetRepository<T>() where T : class
         {
             return new Repository<T>(_context);
         }

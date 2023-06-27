@@ -4,7 +4,7 @@ using PizzaGoAPI.Entities;
 
 namespace PizzaGoAPI.DataAccess.Repositories
 {
-    public class ProductRepository : Repository<Product>, IProductRepository
+    public class ProductRepository : Repository<Product>, IGenericRepository<Product>
     {
         private PizzaAppContext _context;
         public ProductRepository(PizzaAppContext context) : base(context)

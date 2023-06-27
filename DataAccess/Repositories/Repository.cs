@@ -4,7 +4,7 @@ using PizzaGoAPI.DBContext;
 
 namespace PizzaGoAPI.DataAccess.Repositories
 {
-    public class Repository<T> : IRepository<T> where T : class
+    public class Repository<T> : IGenericRepository<T> where T : class
     {
         private readonly PizzaAppContext _context;
         private readonly DbSet<T> _dbSet;
