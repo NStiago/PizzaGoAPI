@@ -1,4 +1,6 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Mvc;
+using PizzaGoAPI.DataAccess.Interfaces;
 using PizzaGoAPI.Models;
 
 namespace PizzaGoAPI.Controllers
@@ -7,8 +9,15 @@ namespace PizzaGoAPI.Controllers
     [Route("api/categories/{categoryId}/products")]
     public class ProductController : ControllerBase
     {
+        private readonly IUnitOfWork _unitOfWork;
+        private readonly IMapper _mapper;
+        public ProductController(IUnitOfWork unitOfWork, IMapper mapper)
+        {
+            _unitOfWork=unitOfWork;
+            _mapper=mapper;
+        }
         //[HttpGet]
-        //public ActionResult<IEnumerable<ProductDTO>> GetProducts(int categoryId)
+        //public async ActionResult<IEnumerable<ProductDTO>> GetProducts(int categoryId)
         //{
         //    var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
         //    if (category == null)
