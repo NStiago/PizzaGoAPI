@@ -7,14 +7,14 @@ namespace PizzaGoAPI.DataAccess.Repositories
     {
         private readonly PizzaAppContext _context;
         private bool disposed = false;
-        public UnitOfWork(PizzaAppContext context)
+        public ICategoryRepository Categories { get;  }
+        public IProductRepository Products { get; }
+
+        public UnitOfWork(PizzaAppContext context, ICategoryRepository categories, IProductRepository products)
         {
             _context = context;
-        }
-
-        public IGenericRepository<T> GetRepository<T>() where T : class
-        {
-            return new Repository<T>(_context);
+            Categories = categories;
+            Products = products;
         }
 
         public void Save()

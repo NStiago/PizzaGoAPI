@@ -4,12 +4,13 @@ using PizzaGoAPI.Entities;
 
 namespace PizzaGoAPI.DataAccess.Repositories
 {
-    public class ProductRepository : Repository<Product>, IGenericRepository<Product>
+    public class ProductRepository :  GenericRepository<Product>, IProductRepository
     {
-        private PizzaAppContext _context;
         public ProductRepository(PizzaAppContext context) : base(context)
         {
-            _context = context;
+
         }
+
+
     }
 }

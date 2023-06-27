@@ -2,7 +2,8 @@
 {
     public interface IUnitOfWork : IDisposable
     {
-        IGenericRepository<T> GetRepository<T>() where T : class;
+        IProductRepository Products { get; }
+        ICategoryRepository Categories { get; }
         void Save();
     }
 }

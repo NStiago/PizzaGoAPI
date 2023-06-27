@@ -18,31 +18,36 @@ namespace PizzaGoAPI.Controllers
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public CategoryController(IMailService mailService, PizzaAppContext context, IMapper mapper)
+        public CategoryController(IMailService mailService, IUnitOfWork unitOfWork, IMapper mapper)
         { 
             _mailService = mailService;
-            _unitOfWork = new UnitOfWork(context);
+            _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
 
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<CategoryDTO>>> GetCategories()
+        public async Task<ActionResult<IEnumerable<CategoryDTOWithoutProduct>>> GetCategories()
         {
-            var categoryEntities = await _unitOfWork.GetRepository<Category>().GetAllAsync(include: x=>x.Include(z=>z.Products));
-            return Ok(_mapper.Map<IEnumerable<CategoryDTO>>(categoryEntities));
+            var categoryEntities = await _unitOfWork.Categories.GetAllAsync();
+            return Ok(_mapper.Map<IEnumerable<CategoryDTOWithoutProduct>>(categoryEntities));
         }
 
         [HttpGet("{id}")]
-        public async Task<ActionResult<CategoryDTO>> GetCategory(int id)
+        public async Task<IActionResult> GetCategory(int id, bool includeProduct=false)
         {
-            var categoryToReturn = _unitOfWork.GetRepository<Category>().Get(id);
+            var categoryToReturn = _unitOfWork.Categories.GetAsync(id,includeProduct).Result;
 
             if (categoryToReturn == null)
                 return NotFound();
 
             //отправка сообщения при запросе категории
             _mailService.Send("sementiago", $"sending message from CategoryController and GetCategory with id: {id}");
-            return Ok(_mapper.Map<CategoryDTO>(categoryToReturn));
+
+            if (includeProduct)
+            {
+                return Ok(_mapper.Map<CategoryDTO>(categoryToReturn));
+            }
+            return Ok(_mapper.Map<CategoryDTOWithoutProduct>(categoryToReturn));
         }
     }
 }

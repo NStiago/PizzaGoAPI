@@ -7,6 +7,7 @@ namespace PizzaGoAPI.Profiles
         public CategoryProfile()
         {
             CreateMap<Entities.Category, Models.CategoryDTO>();
+            CreateMap<Entities.Category, Models.CategoryDTOWithoutProduct>();
         }
     }
 }

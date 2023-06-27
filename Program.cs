@@ -33,8 +33,10 @@ namespace PizzaGoAPI
             string connectionString = builder.Configuration.GetConnectionString("DefaultConnection");
             builder.Services.AddDbContext<PizzaAppContext>(options => options.UseSqlServer(connectionString));
             //регистрация репозиториев
+            builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
+            builder.Services.AddScoped<IProductRepository, ProductRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
-
+            //регистрация автомаппера
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
             //регистрация сендера
 #if DEBUG
