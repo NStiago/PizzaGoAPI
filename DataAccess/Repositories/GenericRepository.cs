@@ -13,12 +13,12 @@ namespace PizzaGoAPI.DataAccess.Repositories
         }
         public void Create(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Add(entity);
         }
 
         public void CreateAsync(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().AddAsync(entity);
         }
 
         public void Delete(int id)

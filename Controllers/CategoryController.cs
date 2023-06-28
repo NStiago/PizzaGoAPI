@@ -53,6 +53,13 @@ namespace PizzaGoAPI.Controllers
                 return Ok(_mapper.Map<CategoryDTO>(categoryToReturn));
             }
             return Ok(_mapper.Map<CategoryDTOWithoutProduct>(categoryToReturn));
+            
+        }
+        [HttpPost]
+        public async Task<ActionResult<CategoryDTOWithoutProduct>> CreateCategory(CategoryDTOForCreation category)
+        {
+            var resultCategory = _mapper.Map<Category>(category);
+
         }
     }
 }
