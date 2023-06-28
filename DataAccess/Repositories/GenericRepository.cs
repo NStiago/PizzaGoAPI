@@ -16,9 +16,10 @@ namespace PizzaGoAPI.DataAccess.Repositories
             _context.Set<T>().Add(entity);
         }
 
-        public void CreateAsync(T entity)
+        public async Task CreateAsync(T entity)
         {
-            _context.Set<T>().AddAsync(entity);
+            if(entity != null)
+               await _context.Set<T>().AddAsync(entity);
         }
 
         public void Delete(int id)

@@ -10,7 +10,7 @@ namespace PizzaGoAPI.DataAccess.Interfaces
         Task<IEnumerable<T>> GetAllAsync();
         void Create(T entity);
         //возможно придется вернуть Task<int>
-        void CreateAsync(T entity);
+        Task CreateAsync(T entity);
         void Update(T entity);
         //возможно придется вернуть Task<int>
         void UpdateAsync(T entity);

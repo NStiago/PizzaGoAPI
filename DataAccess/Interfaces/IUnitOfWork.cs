@@ -4,6 +4,6 @@
     {
         IProductRepository Products { get; }
         ICategoryRepository Categories { get; }
-        void Save();
+        Task Save();
     }
 }

@@ -17,9 +17,9 @@ namespace PizzaGoAPI.DataAccess.Repositories
             Products = products;
         }
 
-        public void Save()
+        public async Task Save()
         {
-            _context.SaveChanges();
+            await _context.SaveChangesAsync();
         }
 
         public virtual void Dispose(bool disposing)

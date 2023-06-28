@@ -35,10 +35,10 @@ namespace PizzaGoAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<CategoryDTOWithoutProduct>>(categoryEntities));
         }
 
-        [HttpGet("{id}")]
-        public async Task<IActionResult> GetCategory(int id, bool includeProduct=false)
+        [HttpGet("{id}", Name = "GetCategory")]
+        public async Task<IActionResult> GetCategory(int id, bool includeProduct = false)
         {
-            var categoryToReturn = _unitOfWork.Categories.GetAsync(id,includeProduct).Result;
+            var categoryToReturn = _unitOfWork.Categories.GetAsync(id, includeProduct).Result;
             if (categoryToReturn == null)
             {
                 _logger.LogInformation($"Category with Id: {id} Not Found");
@@ -53,13 +53,25 @@ namespace PizzaGoAPI.Controllers
                 return Ok(_mapper.Map<CategoryDTO>(categoryToReturn));
             }
             return Ok(_mapper.Map<CategoryDTOWithoutProduct>(categoryToReturn));
-            
+
         }
         [HttpPost]
         public async Task<ActionResult<CategoryDTOWithoutProduct>> CreateCategory(CategoryDTOForCreation category)
         {
             var resultCategory = _mapper.Map<Category>(category);
+            if(await _unitOfWork.Categories.CategoriesIncludeNameAsync(category.Name))
+                return BadRequest("Такая категория уже существует");
 
+            await _unitOfWork.Categories.CreateAsync(resultCategory);
+            await _unitOfWork.Save();
+
+            var returnCategory = _mapper.Map<CategoryDTOWithoutProduct>(resultCategory);
+            
+            return CreatedAtRoute("GetCategory", new 
+            {
+               id= returnCategory.Id,
+            },
+            returnCategory);
         }
     }
 }
