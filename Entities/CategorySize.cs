@@ -1,4 +1,5 @@
-﻿using System.ComponentModel.DataAnnotations.Schema;
+﻿using AutoMapper.Configuration.Annotations;
+using System.ComponentModel.DataAnnotations.Schema;
 
 namespace PizzaGoAPI.Entities
 {
@@ -8,8 +9,7 @@ namespace PizzaGoAPI.Entities
         public string Name { get; set; }
         public double Capacity { get; set; }
 
-        
         //public Category Category { get; set; }
-        //public int CategoryId { get; set; }
+        public int CategoryId { get; set; }
     }
 }

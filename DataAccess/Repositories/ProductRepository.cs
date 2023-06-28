@@ -1,4 +1,5 @@
-﻿using PizzaGoAPI.DataAccess.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PizzaGoAPI.DataAccess.Interfaces;
 using PizzaGoAPI.DBContext;
 using PizzaGoAPI.Entities;
 
@@ -11,6 +12,10 @@ namespace PizzaGoAPI.DataAccess.Repositories
 
         }
 
-
+        public async Task<IEnumerable<Product>> GetProductsOfCategory(int categoryId)
+        {
+            return await _context.Products.Where(x=>x.CategoryId==categoryId).ToListAsync();
+        }
+        
     }
 }

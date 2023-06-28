@@ -20,5 +20,9 @@ namespace PizzaGoAPI.DataAccess.Repositories
             }
             return await _context.Categories.Where(p=> p.Id == id).FirstOrDefaultAsync();
         }
+        public async Task<bool> CategoryExistAsync(int categoryId)
+        {
+            return await _context.Categories.AnyAsync(x=>x.Id == categoryId);
+        }
     }
 }

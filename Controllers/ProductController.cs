@@ -16,31 +16,39 @@ namespace PizzaGoAPI.Controllers
             _unitOfWork=unitOfWork;
             _mapper=mapper;
         }
-        //[HttpGet]
-        //public async ActionResult<IEnumerable<ProductDTO>> GetProducts(int categoryId)
-        //{
-        //    var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
-        //    if (category == null)
-        //        return NotFound();
+        [HttpGet]
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts(int categoryId)
+        {
+            if(!await _unitOfWork.Categories.CategoryExistAsync(categoryId))
+            {
+                return NotFound();
+            }
+            var productToReturn = await _unitOfWork.Products.GetProductsOfCategory(categoryId);
+            return Ok(_mapper.Map<IEnumerable<ProductDTO>>(productToReturn));
+        }
 
-        //    return Ok(category.Products);
-        //}
+            //    var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
+            //    if (category == null)
+            //        return NotFound();
 
-        //[HttpGet("{productId}")]
-        //public ActionResult<ProductDTO> GetProduct(int categoryId, int productId)
-        //{
-        //    //получение категории
-        //    var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
+            //    return Ok(category.Products);
+            //}
 
-        //    if (category == null)
-        //        return NotFound();
-        //    //получение продукта
-        //    var product = category.Products.FirstOrDefault(x => x.Id == productId);
-        //    if (product == null)
-        //        return NotFound();
+            //[HttpGet("{productId}")]
+            //public ActionResult<ProductDTO> GetProduct(int categoryId, int productId)
+            //{
+            //    //получение категории
+            //    var category = CategoryDataStore.Current.Categories.FirstOrDefault(x => x.Id == categoryId);
 
-        //    return product;
-        //}
+            //    if (category == null)
+            //        return NotFound();
+            //    //получение продукта
+            //    var product = category.Products.FirstOrDefault(x => x.Id == productId);
+            //    if (product == null)
+            //        return NotFound();
 
-    }
+            //    return product;
+            //}
+
+        }
 }
