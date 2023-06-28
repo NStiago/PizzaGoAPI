@@ -60,5 +60,9 @@ namespace PizzaGoAPI.DataAccess.Repositories
         {
             throw new NotImplementedException();
         }
+        public async Task<int> GetCountAsync()
+        {
+            return await _context.Set<T>().CountAsync();
+        }
     }
 }

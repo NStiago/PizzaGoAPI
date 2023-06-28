@@ -17,5 +17,6 @@ namespace PizzaGoAPI.DataAccess.Interfaces
         void Delete(int id);
         //возможно придется вернуть Task<int>
         void DeleteAsync(int id);
+        Task<int> GetCountAsync();
     }
 }

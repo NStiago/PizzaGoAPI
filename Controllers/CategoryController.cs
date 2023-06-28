@@ -18,17 +18,20 @@ namespace PizzaGoAPI.Controllers
         private readonly IMailService _mailService;
         private readonly IUnitOfWork _unitOfWork;
         private readonly IMapper _mapper;
-        public CategoryController(IMailService mailService, IUnitOfWork unitOfWork, IMapper mapper)
-        { 
+        private readonly ILogger _logger;
+        public CategoryController(IMailService mailService, IUnitOfWork unitOfWork, IMapper mapper, ILogger<CategoryController> logger)
+        {
             _mailService = mailService;
             _unitOfWork = unitOfWork;
             _mapper = mapper;
+            _logger = logger;
         }
 
         [HttpGet]
         public async Task<ActionResult<IEnumerable<CategoryDTOWithoutProduct>>> GetCategories()
         {
             var categoryEntities = await _unitOfWork.Categories.GetAllAsync();
+            _logger.LogInformation($"Get a count of Category: {await _unitOfWork.Categories.GetCountAsync()}");
             return Ok(_mapper.Map<IEnumerable<CategoryDTOWithoutProduct>>(categoryEntities));
         }
 
@@ -37,7 +40,10 @@ namespace PizzaGoAPI.Controllers
         {
             var categoryToReturn = _unitOfWork.Categories.GetAsync(id,includeProduct).Result;
             if (categoryToReturn == null)
+            {
+                _logger.LogInformation($"Category with Id: {id} Not Found");
                 return NotFound();
+            }
 
             //отправка сообщения при запросе категории
             _mailService.Send("sementiago", $"sending message from CategoryController and GetCategory with id: {id}");
