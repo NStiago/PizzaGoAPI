@@ -116,7 +116,7 @@ namespace PizzaGoAPI.Controllers
             inputJsonPatch.ApplyTo(productForPatch);
 
             _mapper.Map(productForPatch, productFromDB);
-            _unitOfWork.Save();
+            await _unitOfWork.Save();
             return NoContent();
         }
     }
