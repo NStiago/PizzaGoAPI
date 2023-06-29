@@ -56,11 +56,11 @@ namespace PizzaGoAPI.Controllers
 
         }
         [HttpPost]
-        public async Task<ActionResult<CategoryDTOWithoutProduct>> CreateCategory(CategoryDTOForCreation category)
+        public async Task<ActionResult<CategoryDTOWithoutProduct>> CreateCategory(CategoryDTOForCreation inputCategory)
         {
-            var resultCategory = _mapper.Map<Category>(category);
-            if(await _unitOfWork.Categories.IncludeNameAsync(category.Name))
-                return BadRequest($"Категория с именем{category.Name} уже существует");
+            var resultCategory = _mapper.Map<Category>(inputCategory);
+            if(await _unitOfWork.Categories.IncludeNameAsync(inputCategory.Name))
+                return BadRequest($"Категория с именем{inputCategory.Name} уже существует");
 
             await _unitOfWork.Categories.CreateAsync(resultCategory);
             await _unitOfWork.Save();
@@ -74,7 +74,7 @@ namespace PizzaGoAPI.Controllers
             returnCategory);
         }
         [HttpPut("{id}")]
-        public async Task<ActionResult> UpdateCategory(int id, CategoryDTOForCreation category)
+        public async Task<ActionResult> UpdateCategory(int id, CategoryDTOForCreation inputCategory)
         {
             var categoryForUpdate = await _unitOfWork.Categories.GetAsync(id);
             if (categoryForUpdate==null)
@@ -83,7 +83,7 @@ namespace PizzaGoAPI.Controllers
                 return NotFound();
             }
             
-            _mapper.Map(category, categoryForUpdate);
+            _mapper.Map(inputCategory, categoryForUpdate);
             await _unitOfWork.Save();
             return NoContent();
         }

@@ -19,6 +19,7 @@ namespace PizzaGoAPI.Controllers
             _mapper=mapper;
             _logger=logger;
         }
+
         [HttpGet]
         public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts(int categoryId)
         {
@@ -50,6 +51,7 @@ namespace PizzaGoAPI.Controllers
             _logger.LogInformation($"Get a Product {productId} from {categoryId}");
             return Ok(_mapper.Map<ProductDTO>(productToReturn));
         }
+
         [HttpPost]
         public async Task<ActionResult<ProductDTO>> CreateProduct(int categoryId, ProductDTOForCreation product)
         {
@@ -72,7 +74,25 @@ namespace PizzaGoAPI.Controllers
                 productId = resultProduct.Id
             },
             returnProduct);
+        }
 
+        [HttpPut("{productId}")]
+        public async Task<ActionResult> UpdateProduct(int categoryId, int productId, ProductDTOForCreation inputProduct)
+        {
+            if (!await _unitOfWork.Categories.CategoryExistAsync(categoryId))
+            {
+                _logger.LogInformation($"Category with Id: {categoryId} Not Found");
+                return NotFound();
+            }
+            var productForUpdate = await _unitOfWork.Products.GetAsync(productId);
+            if (productForUpdate == null)
+            {
+                _logger.LogInformation($"Product with Id: {productId} Not Found");
+                return NotFound();
+            }
+            _mapper.Map(inputProduct,productForUpdate);
+            await _unitOfWork.Save();
+            return NoContent();
         }
      }
 }
