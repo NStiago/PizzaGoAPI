@@ -13,10 +13,7 @@ namespace PizzaGoAPI.DataAccess.Interfaces
         Task CreateAsync(T entity);
         void Update(T entity);
         //возможно придется вернуть Task<int>
-        void UpdateAsync(T entity);
-        void Delete(int id);
-        //возможно придется вернуть Task<int>
-        void DeleteAsync(int id);
         Task<int> GetCountAsync();
+        void Delete(int id);
     }
 }

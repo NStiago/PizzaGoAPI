@@ -24,12 +24,9 @@ namespace PizzaGoAPI.DataAccess.Repositories
 
         public void Delete(int id)
         {
-            throw new NotImplementedException();
-        }
-
-        public void DeleteAsync(int id)
-        {
-            throw new NotImplementedException();
+            var entityForDeleting = Get(id);
+            if (entityForDeleting != null)
+                _context.Set<T>().Remove(entityForDeleting);
         }
 
         public T Get(int id)
@@ -54,13 +51,9 @@ namespace PizzaGoAPI.DataAccess.Repositories
 
         public void Update(T entity)
         {
-            throw new NotImplementedException();
+            _context.Set<T>().Update(entity);
         }
 
-        public void UpdateAsync(T entity)
-        {
-            throw new NotImplementedException();
-        }
         public async Task<int> GetCountAsync()
         {
             return await _context.Set<T>().CountAsync();
