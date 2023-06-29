@@ -96,6 +96,7 @@ namespace PizzaGoAPI.Controllers
             await _unitOfWork.Save();
             return NoContent();
         }
+
         [HttpPatch("{productId}")]
         public async Task<ActionResult> PartiallyUpdateProduct(int categoryId, int productId,
             JsonPatchDocument<ProductDTOForCreation> inputJsonPatch)
@@ -116,6 +117,25 @@ namespace PizzaGoAPI.Controllers
             inputJsonPatch.ApplyTo(productForPatch);
 
             _mapper.Map(productForPatch, productFromDB);
+            await _unitOfWork.Save();
+            return NoContent();
+        }
+
+        [HttpDelete("{productId}")]
+        public async Task<ActionResult> DeleteProduct(int categoryId, int productId)
+        {
+            if (!await _unitOfWork.Categories.CategoryExistAsync(categoryId))
+            {
+                _logger.LogInformation($"Category with Id: {categoryId} Not Found");
+                return NotFound();
+            }
+            var productForDelete = _unitOfWork.Products.Get(productId);
+            if (productForDelete == null)
+            {
+                _logger.LogInformation($"Product with Id: {productId} Not Found");
+                return NotFound();
+            }
+            _unitOfWork.Products.Delete(productId);
             await _unitOfWork.Save();
             return NoContent();
         }
