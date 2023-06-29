@@ -59,8 +59,8 @@ namespace PizzaGoAPI.Controllers
         public async Task<ActionResult<CategoryDTOWithoutProduct>> CreateCategory(CategoryDTOForCreation category)
         {
             var resultCategory = _mapper.Map<Category>(category);
-            if(await _unitOfWork.Categories.CategoriesIncludeNameAsync(category.Name))
-                return BadRequest("Такая категория уже существует");
+            if(await _unitOfWork.Categories.IncludeNameAsync(category.Name))
+                return BadRequest($"Категория с именем{category.Name} уже существует");
 
             await _unitOfWork.Categories.CreateAsync(resultCategory);
             await _unitOfWork.Save();

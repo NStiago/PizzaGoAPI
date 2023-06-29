@@ -1,6 +1,7 @@
 ﻿using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
 using PizzaGoAPI.DataAccess.Interfaces;
+using PizzaGoAPI.Entities;
 using PizzaGoAPI.Models;
 
 namespace PizzaGoAPI.Controllers
@@ -32,7 +33,7 @@ namespace PizzaGoAPI.Controllers
             return Ok(_mapper.Map<IEnumerable<ProductDTO>>(productsToReturn));
         }
 
-        [HttpGet("{productId}")]
+        [HttpGet("{productId}", Name ="GetProduct")]
         public async Task<ActionResult<ProductDTO>> GetProduct(int categoryId, int productId)
         {
             if (!await _unitOfWork.Categories.CategoryExistAsync(categoryId))
@@ -43,11 +44,35 @@ namespace PizzaGoAPI.Controllers
             var productToReturn = await _unitOfWork.Products.GetAsync(productId);
             if(productToReturn == null)
             {
-                _logger.LogInformation($"CProduct with Id: {productId} Not Found");
+                _logger.LogInformation($"Product with Id: {productId} Not Found");
                 return NotFound();
             }
             _logger.LogInformation($"Get a Product {productId} from {categoryId}");
             return Ok(_mapper.Map<ProductDTO>(productToReturn));
+        }
+        [HttpPost]
+        public async Task<ActionResult<ProductDTO>> CreateProduct(int categoryId, ProductDTOForCreation product)
+        {
+            if (!await _unitOfWork.Categories.CategoryExistAsync(categoryId))
+            {
+                _logger.LogInformation($"Category with Id: {categoryId} Not Found");
+                return NotFound();
+            }
+            var resultProduct = _mapper.Map<Product>(product);
+            if (await _unitOfWork.Products.IncludeNameAsync(product.Name))
+                return BadRequest($"Товар с именем {product.Name} уже существует");
+
+            await _unitOfWork.Products.CreateForCategoryAsync(categoryId, resultProduct);
+            await _unitOfWork.Save();
+            var returnProduct = _mapper.Map<ProductDTO>(resultProduct);
+
+            return CreatedAtRoute("GetProduct", new
+            {
+                categoryId = returnProduct.CategoryId,
+                productId = resultProduct.Id
+            },
+            returnProduct);
+
         }
      }
 }

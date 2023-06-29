@@ -20,5 +20,18 @@ namespace PizzaGoAPI.DataAccess.Repositories
         {
             return await _context.Products.Where(x => x.CategoryId == categoryId).CountAsync();
         }
+        public async Task<bool> IncludeNameAsync(string productName)
+        {
+            return await _context.Products.AnyAsync(x => x.Name == productName);
+        }
+        //необходимо доработать
+        public async Task CreateForCategoryAsync(int categoryId, Product product)
+        {
+            var category = await _context.Categories.Include(p=>p.Products).Where(x=>x.Id==categoryId).FirstOrDefaultAsync();
+            if(category != null)
+            {
+                category.Products.Add(product);
+            }
+        }
     }
 }

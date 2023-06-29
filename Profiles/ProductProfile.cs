@@ -7,6 +7,7 @@ namespace PizzaGoAPI.Profiles
         public ProductProfile()
         {
             CreateMap<Entities.Product, Models.ProductDTO>();
+            CreateMap<Models.ProductDTOForCreation, Entities.Product>();
         }
     }
 }
