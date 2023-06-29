@@ -50,8 +50,10 @@ namespace PizzaGoAPI.Controllers
 
             if (includeProduct)
             {
+                _logger.LogInformation($"Get a Category with ID: {categoryToReturn.Id}");
                 return Ok(_mapper.Map<CategoryDTO>(categoryToReturn));
             }
+            _logger.LogInformation($"Get a Category with ID: {categoryToReturn.Id}");
             return Ok(_mapper.Map<CategoryDTOWithoutProduct>(categoryToReturn));
 
         }
@@ -64,9 +66,10 @@ namespace PizzaGoAPI.Controllers
 
             await _unitOfWork.Categories.CreateAsync(resultCategory);
             await _unitOfWork.Save();
+            
 
             var returnCategory = _mapper.Map<CategoryDTOWithoutProduct>(resultCategory);
-            
+            _logger.LogInformation($"Create a Category with ID: {returnCategory.Id}");
             return CreatedAtRoute("GetCategory", new 
             {
                id= returnCategory.Id,
@@ -84,6 +87,7 @@ namespace PizzaGoAPI.Controllers
             }
             
             _mapper.Map(inputCategory, categoryForUpdate);
+            _logger.LogInformation($"Update a Category with ID: {categoryForUpdate.Id}");
             await _unitOfWork.Save();
             return NoContent();
         }
@@ -100,6 +104,7 @@ namespace PizzaGoAPI.Controllers
 
             _unitOfWork.Categories.Delete(id);
             await _unitOfWork.Save();
+            _logger.LogInformation($"Delete a Category with ID: {id}");
             return NoContent();
         }
     }
