@@ -69,7 +69,7 @@ namespace PizzaGoAPI.Controllers
             await _unitOfWork.Products.CreateForCategoryAsync(categoryId, resultProduct);
             await _unitOfWork.Save();
             var returnProduct = _mapper.Map<ProductDTO>(resultProduct);
-
+            _logger.LogInformation($"Create a Product with ID: {returnProduct.Id}");
             return CreatedAtRoute("GetProduct", new
             {
                 categoryId = returnProduct.CategoryId,
@@ -93,6 +93,7 @@ namespace PizzaGoAPI.Controllers
                 return NotFound();
             }
             _mapper.Map(inputProduct, productForUpdate);
+            _logger.LogInformation($"Update a Product with ID: {productForUpdate.Id}");
             await _unitOfWork.Save();
             return NoContent();
         }
@@ -117,6 +118,7 @@ namespace PizzaGoAPI.Controllers
             inputJsonPatch.ApplyTo(productForPatch);
 
             _mapper.Map(productForPatch, productFromDB);
+            _logger.LogInformation($"Update a Product with ID: {productFromDB.Id}");
             await _unitOfWork.Save();
             return NoContent();
         }
@@ -137,6 +139,7 @@ namespace PizzaGoAPI.Controllers
             }
             _unitOfWork.Products.Delete(productId);
             await _unitOfWork.Save();
+            _logger.LogInformation($"Delete a Product with ID: {productId}");
             return NoContent();
         }
     }
