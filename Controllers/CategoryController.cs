@@ -87,5 +87,20 @@ namespace PizzaGoAPI.Controllers
             await _unitOfWork.Save();
             return NoContent();
         }
+
+        [HttpDelete("{id}")]
+        public async Task<ActionResult> DeleteCategory(int id)
+        {
+            
+            if (!await _unitOfWork.Categories.CategoryExistAsync(id))
+            {
+                _logger.LogInformation($"Category with Id: {id} Not Found");
+                return NotFound();
+            }
+
+            _unitOfWork.Categories.Delete(id);
+            await _unitOfWork.Save();
+            return NoContent();
+        }
     }
 }
