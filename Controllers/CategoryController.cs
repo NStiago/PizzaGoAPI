@@ -73,5 +73,19 @@ namespace PizzaGoAPI.Controllers
             },
             returnCategory);
         }
+        [HttpPut("{id}")]
+        public async Task<ActionResult> UpdateCategory(int id, CategoryDTOForCreation category)
+        {
+            var categoryForUpdate = await _unitOfWork.Categories.GetAsync(id);
+            if (categoryForUpdate==null)
+            {
+                _logger.LogInformation($"Category with Id: {id} Not Found");
+                return NotFound();
+            }
+            
+            _mapper.Map(category, categoryForUpdate);
+            _unitOfWork.Save();
+            return NoContent();
+        }
     }
 }
