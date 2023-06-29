@@ -84,7 +84,7 @@ namespace PizzaGoAPI.Controllers
             }
             
             _mapper.Map(category, categoryForUpdate);
-            _unitOfWork.Save();
+            await _unitOfWork.Save();
             return NoContent();
         }
     }
