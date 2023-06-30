@@ -24,7 +24,7 @@ namespace PizzaGoAPI.Controllers
 
         //Получение продуктов категории, с использованием фильтрации по стоимости
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts(int categoryId,int? cheaperThan)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts(int categoryId, string? cheaperThan)
         {
             if (!await _unitOfWork.Categories.CategoryExistAsync(categoryId))
             {

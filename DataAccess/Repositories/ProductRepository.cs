@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PizzaGoAPI.DataAccess.Interfaces;
 using PizzaGoAPI.DBContext;
 using PizzaGoAPI.Entities;
@@ -16,15 +17,15 @@ namespace PizzaGoAPI.DataAccess.Repositories
         {
             return await _context.Products.Where(x=>x.CategoryId==categoryId).ToListAsync();
         }
-        public async Task<IEnumerable<Product>> GetProductsOfCategory(int categoryId, int? cheaperThan)
+        public async Task<IEnumerable<Product>> GetProductsOfCategory(int categoryId, string? cheaperThan)
         {
-            if(!cheaperThan.HasValue) 
+            if(string.IsNullOrEmpty(cheaperThan)) 
             { 
                 return await GetProductsOfCategory(categoryId);
             }
             return await _context.Products
                 .Where(x => x.CategoryId == categoryId)
-                .Where(cost=>cost.Price<=cheaperThan)
+                .Where(cost=>cost.Price<= Convert.ToInt32(cheaperThan))
                 .ToListAsync();
         }
         public async Task<int> GetCountProductFromCategory(int categoryId)
