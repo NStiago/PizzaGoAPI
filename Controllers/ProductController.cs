@@ -22,8 +22,9 @@ namespace PizzaGoAPI.Controllers
             _logger = logger;
         }
 
+        //Получение продуктов категории, с использованием фильтрации по стоимости
         [HttpGet]
-        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts(int categoryId)
+        public async Task<ActionResult<IEnumerable<ProductDTO>>> GetProducts(int categoryId,int? cheaperThan)
         {
             if (!await _unitOfWork.Categories.CategoryExistAsync(categoryId))
             {
@@ -32,7 +33,7 @@ namespace PizzaGoAPI.Controllers
             }
             _logger.LogInformation($"Get a count of Product: {await _unitOfWork.Products.GetCountProductFromCategory(categoryId)} " +
                 $"from Category {categoryId}");
-            var productsToReturn = await _unitOfWork.Products.GetProductsOfCategory(categoryId);
+            var productsToReturn = await _unitOfWork.Products.GetProductsOfCategory(categoryId,cheaperThan);
             return Ok(_mapper.Map<IEnumerable<ProductDTO>>(productsToReturn));
         }
 
