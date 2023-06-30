@@ -17,16 +17,30 @@ namespace PizzaGoAPI.DataAccess.Repositories
         {
             return await _context.Products.Where(x=>x.CategoryId==categoryId).ToListAsync();
         }
-        public async Task<IEnumerable<Product>> GetProductsOfCategory(int categoryId, string? cheaperThan)
+        public async Task<IEnumerable<Product>> GetProductsOfCategory(int categoryId, string? cheaperThan, string? searchString)
         {
-            if(string.IsNullOrEmpty(cheaperThan)) 
+            if(string.IsNullOrEmpty(cheaperThan) && string.IsNullOrEmpty(searchString)) 
             { 
                 return await GetProductsOfCategory(categoryId);
             }
-            return await _context.Products
-                .Where(x => x.CategoryId == categoryId)
-                .Where(cost=>cost.Price<= Convert.ToInt32(cheaperThan))
-                .ToListAsync();
+            
+            var collection = _context.Products as IQueryable<Product>;
+            collection = collection.Where(x => x.CategoryId == categoryId);
+            if (!string.IsNullOrWhiteSpace(cheaperThan))
+            {
+                cheaperThan = cheaperThan.Trim();
+                collection = collection.Where(cost => cost.Price <= Convert.ToInt32(cheaperThan));
+            }
+
+            if (!string.IsNullOrWhiteSpace(searchString))
+            {
+                searchString = searchString.Trim().ToLower();
+                collection = collection.Where(srch=>
+                                                    srch.Name.ToLower().Contains(searchString)||
+                                                    srch.Description.ToLower().Contains(searchString));
+            }
+            
+            return await collection.ToListAsync();
         }
         public async Task<int> GetCountProductFromCategory(int categoryId)
         {

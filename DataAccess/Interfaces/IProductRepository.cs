@@ -7,7 +7,7 @@ namespace PizzaGoAPI.DataAccess.Interfaces
         Task CreateForCategoryAsync(int categoryId, Product product);
         Task<int> GetCountProductFromCategory(int categoryId);
         Task<IEnumerable<Product>> GetProductsOfCategory(int categoryId);
-        Task<IEnumerable<Product>> GetProductsOfCategory(int categoryId, string? cheaperThan);
+        Task<IEnumerable<Product>> GetProductsOfCategory(int categoryId, string? cheaperThan,string? searchString);
         Task<bool> IncludeNameAsync(string productName);
     }
 }
