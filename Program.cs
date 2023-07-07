@@ -1,11 +1,14 @@
 
+using Microsoft.AspNetCore.Authentication.JwtBearer;
 using Microsoft.AspNetCore.Builder;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.IdentityModel.Tokens;
 using PizzaGoAPI.DataAccess.Interfaces;
 using PizzaGoAPI.DataAccess.Repositories;
 using PizzaGoAPI.DBContext;
 using PizzaGoAPI.Entities;
 using PizzaGoAPI.Services.MailServece;
+using System.Text;
 
 namespace PizzaGoAPI
 {
@@ -28,7 +31,26 @@ namespace PizzaGoAPI
             Newtonsoft.Json.ReferenceLoopHandling.Ignore);*/
 
             //Добавим аутентификацию с помощью jwt-токена и авторизацию
-            builder.Services.AddAuthentication("Bearer").AddJwtBearer();
+            var secretKey = builder.Configuration.GetSection("JWTSettings:SecretKey").Value;
+            var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
+
+            builder.Services.AddAuthentication(options =>
+            {
+                options.DefaultAuthenticateScheme = JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultChallengeScheme=JwtBearerDefaults.AuthenticationScheme;
+                options.DefaultScheme= JwtBearerDefaults.AuthenticationScheme;
+            }).AddJwtBearer(options=>
+            options.TokenValidationParameters=new TokenValidationParameters
+            {
+                ValidateIssuer=true,
+                ValidIssuer = builder.Configuration.GetSection("JWTSettings:Issuer").Value,
+                ValidateAudience=true,
+                ValidAudience= builder.Configuration.GetSection("JWTSettings:Audience").Value,
+                ValidateLifetime=true,
+                IssuerSigningKey=signingKey,
+                ValidateIssuerSigningKey=true
+            });
+
             builder.Services.AddAuthorization();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
