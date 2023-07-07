@@ -7,6 +7,7 @@ using PizzaGoAPI.DataAccess.Interfaces;
 using PizzaGoAPI.DataAccess.Repositories;
 using PizzaGoAPI.DBContext;
 using PizzaGoAPI.Entities;
+using PizzaGoAPI.Services.Authorization;
 using PizzaGoAPI.Services.MailServece;
 using System.Text;
 
@@ -31,6 +32,7 @@ namespace PizzaGoAPI
             Newtonsoft.Json.ReferenceLoopHandling.Ignore);*/
 
             //Добавим аутентификацию с помощью jwt-токена и авторизацию
+            builder.Services.Configure<JWTSettings>(builder.Configuration.GetSection("JWTSettings"));
             var secretKey = builder.Configuration.GetSection("JWTSettings:SecretKey").Value;
             var signingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(secretKey));
 
