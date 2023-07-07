@@ -79,7 +79,6 @@ namespace PizzaGoAPI.Controllers
             returnCategory);
         }
         [HttpPut("{id}")]
-        [Authorize]
         public async Task<ActionResult> UpdateCategory(int id, CategoryDTOForCreation inputCategory)
         {
             var categoryForUpdate = await _unitOfWork.Categories.GetAsync(id);
@@ -96,7 +95,6 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpDelete("{id}")]
-        [Authorize]
         public async Task<ActionResult> DeleteCategory(int id)
         {
             
