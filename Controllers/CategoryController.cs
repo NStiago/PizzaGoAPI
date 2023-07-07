@@ -1,4 +1,5 @@
 ﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
@@ -58,6 +59,7 @@ namespace PizzaGoAPI.Controllers
 
         }
         [HttpPost]
+        [Authorize]
         public async Task<ActionResult<CategoryDTOWithoutProduct>> CreateCategory(CategoryDTOForCreation inputCategory)
         {
             var resultCategory = _mapper.Map<Category>(inputCategory);
@@ -77,6 +79,7 @@ namespace PizzaGoAPI.Controllers
             returnCategory);
         }
         [HttpPut("{id}")]
+        [Authorize]
         public async Task<ActionResult> UpdateCategory(int id, CategoryDTOForCreation inputCategory)
         {
             var categoryForUpdate = await _unitOfWork.Categories.GetAsync(id);
@@ -93,6 +96,7 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize]
         public async Task<ActionResult> DeleteCategory(int id)
         {
             
