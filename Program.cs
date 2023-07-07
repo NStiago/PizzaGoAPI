@@ -22,9 +22,14 @@ namespace PizzaGoAPI
                 options.ReturnHttpNotAcceptable = true;
             }).AddNewtonsoftJson();
 
+
             /*AddNewtonsoftJson(options =>
           options.SerializerSettings.ReferenceLoopHandling =
             Newtonsoft.Json.ReferenceLoopHandling.Ignore);*/
+
+            //Добавим аутентификацию с помощью jwt-токена и авторизацию
+            builder.Services.AddAuthentication("Bearer").AddJwtBearer();
+            builder.Services.AddAuthorization();
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
@@ -55,7 +60,10 @@ namespace PizzaGoAPI
             
             app.UseHttpsRedirection();
             app.UseRouting();
+
+            app.UseAuthentication();
             app.UseAuthorization();
+
             app.UseEndpoints(endpoints =>
             {
                 endpoints.MapControllers();
