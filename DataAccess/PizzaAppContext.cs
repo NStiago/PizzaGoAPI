@@ -47,6 +47,17 @@ namespace PizzaGoAPI.DBContext
                 new { Id = 2, Name = "Сыр", Price = 29 },
                 new { Id = 3, Name = "Кетчуп", Price = 19 }
                 );
+            modelBuilder.Entity<User>().HasData(
+                new {
+                      Id = new Guid("ca761232ed4211cebacd00aa0057b223"),
+                      Login = "semenitago",
+                      Password = "123456",
+                      Name = "Sementiago",
+                      Surname ="Dmitriev",
+                      Email  = "skdmitriev70@gmail.com",
+                      Phone = "8-913-000-00-00",
+                      IsAdmin = true
+                });
         }
     }
 }
