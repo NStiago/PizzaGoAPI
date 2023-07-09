@@ -5,7 +5,7 @@ namespace PizzaGoAPI.DataAccess.Interfaces
 {
     public interface IUserRepository:IGenericRepository<User>
     {
-        Task<User> GetValidUser(UserAuth user);
-        bool IsValidUserInformation(UserAuth user);
+        Task<User> GetValidUser(UserDTOAuth user);
+        Task<bool> IsInvalidUserLogin(string Login);
     }
 }

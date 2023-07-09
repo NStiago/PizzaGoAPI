@@ -1,4 +1,5 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿using AutoMapper;
+using Microsoft.EntityFrameworkCore;
 using PizzaGoAPI.DataAccess.Interfaces;
 using PizzaGoAPI.DBContext;
 using PizzaGoAPI.Entities;
@@ -13,17 +14,21 @@ namespace PizzaGoAPI.DataAccess.Repositories
 
         }
 
-        public bool IsValidUserInformation(UserAuth user)
+        public async Task<bool> IsInvalidUserLogin(string Login)
         {
-            if (_context.Users.Any(x => x.Login == user.Login && x.Password == user.Password))
-                return true;
-            else
-                return false;
+            return await _context.Users.AnyAsync(x => x.Login == Login);
         }
 
-        public async Task<User> GetValidUser(UserAuth user)
+        public async Task<User> GetValidUser(UserDTOAuth user)
         {
-            return await _context.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.Password == user.Password);
+            var resultUser = await _context.Users.FirstOrDefaultAsync(x => x.Login == user.Login);
+            if (resultUser == null)
+                return null;
+            bool isValidPassword = BCrypt.Net.BCrypt.Verify(user.Password, resultUser.Password);
+
+            if (isValidPassword)
+                return resultUser;
+            return null;
         }
     }
 }

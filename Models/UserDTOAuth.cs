@@ -2,7 +2,7 @@
 
 namespace PizzaGoAPI.Models
 {
-    public class UserAuth
+    public class UserDTOAuth
     {
         [Required]
         public string Login { get; set; }

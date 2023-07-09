@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Authorization;
+﻿using AutoMapper;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
@@ -18,10 +19,12 @@ namespace PizzaGoAPI.Controllers
     {
         private readonly JWTSettings _options;
         private readonly IUnitOfWork _unitOfWork;
-        public AccountController(IOptions<JWTSettings> optionsAccess, IUnitOfWork unitOfWork)
+        private readonly IMapper _mapper;
+        public AccountController(IOptions<JWTSettings> optionsAccess, IUnitOfWork unitOfWork, IMapper mapper)
         {
             _options = optionsAccess.Value;
             _unitOfWork = unitOfWork;
+            _mapper = mapper;
         }
         [HttpGet]
         [Authorize]
@@ -29,21 +32,32 @@ namespace PizzaGoAPI.Controllers
         {
             return Ok("API is validated");
         }
-        //Доработать получение токена с юзером из БД
+
         [HttpPost]
-        public async Task<IActionResult> Auth(UserAuth user)
+        public async Task<IActionResult> Auth(UserDTOAuth user)
         {
             User validUser = await _unitOfWork.Users.GetValidUser(user);
-            
-            if (validUser!=null)
+            if (validUser != null)
             {
-                var tokenString=GenerateJWTToken(validUser);
-                return Ok(new {Token=tokenString, Message="Succes"});
+                var tokenString = GenerateJWTToken(validUser);
+                return Ok(new { Token = tokenString, Message = "Succes" });
             }
             return BadRequest("Invalid Username or Pass");
         }
+        [HttpPost]
+        [Route("signup")]
+        public async Task<IActionResult> Signup(UserDTOforRegistration user)
+        {
+            if (await _unitOfWork.Users.IsInvalidUserLogin(user.Login))
+                return BadRequest("Invalid Login!");
+            var userToDB = _mapper.Map<User>(user);
+            var salt = BCrypt.Net.BCrypt.GenerateSalt();
+            userToDB.Password = BCrypt.Net.BCrypt.HashPassword(user.Password, salt);
+            _unitOfWork.Users.Create(userToDB);
+            await _unitOfWork.Save();
+            return Ok("User succesfully created!");
+        }
 
-        //исправить на юзера из бд
         private string GenerateJWTToken(User user)
         {
             var claims = new List<Claim>();
