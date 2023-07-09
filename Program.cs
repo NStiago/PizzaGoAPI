@@ -64,6 +64,7 @@ namespace PizzaGoAPI
             //регистрация репозиториев
             builder.Services.AddScoped<ICategoryRepository, CategoryRepository>();
             builder.Services.AddScoped<IProductRepository, ProductRepository>();
+            builder.Services.AddScoped<IUserRepository, UserRepository>();
             builder.Services.AddScoped<IUnitOfWork, UnitOfWork>();
             //регистрация автомаппера
             builder.Services.AddAutoMapper(AppDomain.CurrentDomain.GetAssemblies());
