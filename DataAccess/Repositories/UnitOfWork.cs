@@ -9,12 +9,14 @@ namespace PizzaGoAPI.DataAccess.Repositories
         private bool disposed = false;
         public ICategoryRepository Categories { get;  }
         public IProductRepository Products { get; }
+        public IUserRepository Users { get; }
 
-        public UnitOfWork(PizzaAppContext context, ICategoryRepository categories, IProductRepository products)
+        public UnitOfWork(PizzaAppContext context, ICategoryRepository categories, IProductRepository products, IUserRepository users)
         {
             _context = context;
             Categories = categories;
             Products = products;
+            Users = users;
         }
 
         public async Task Save()
