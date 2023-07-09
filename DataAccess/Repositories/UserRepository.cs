@@ -1,6 +1,8 @@
-﻿using PizzaGoAPI.DataAccess.Interfaces;
+﻿using Microsoft.EntityFrameworkCore;
+using PizzaGoAPI.DataAccess.Interfaces;
 using PizzaGoAPI.DBContext;
 using PizzaGoAPI.Entities;
+using PizzaGoAPI.Models;
 
 namespace PizzaGoAPI.DataAccess.Repositories
 {
@@ -9,6 +11,14 @@ namespace PizzaGoAPI.DataAccess.Repositories
         public UserRepository(PizzaAppContext context) : base(context)
         {
 
+        }
+
+        public bool IsValidUserInformation(UserAuth user)
+        {
+            if (_context.Users.Any(x => x.Login == user.Login && x.Password == user.Password))
+                return true;
+            else
+                return false;
         }
     }
 }

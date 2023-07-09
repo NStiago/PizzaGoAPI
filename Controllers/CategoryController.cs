@@ -59,7 +59,6 @@ namespace PizzaGoAPI.Controllers
 
         }
         [HttpPost]
-        [Authorize]
         public async Task<ActionResult<CategoryDTOWithoutProduct>> CreateCategory(CategoryDTOForCreation inputCategory)
         {
             var resultCategory = _mapper.Map<Category>(inputCategory);
