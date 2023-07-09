@@ -3,6 +3,7 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;
 using Microsoft.IdentityModel.Tokens;
 using PizzaGoAPI.DataAccess.Interfaces;
+using PizzaGoAPI.Entities;
 using PizzaGoAPI.Models;
 using PizzaGoAPI.Services.Authorization;
 using System.IdentityModel.Tokens.Jwt;
@@ -30,22 +31,24 @@ namespace PizzaGoAPI.Controllers
         }
         //Доработать получение токена с юзером из БД
         [HttpPost]
-        public IActionResult Auth(UserAuth user)
+        public async Task<IActionResult> Auth(UserAuth user)
         {
-            bool isValid = _unitOfWork.Users.IsValidUserInformation(user);
-            if (isValid)
+            User validUser = await _unitOfWork.Users.GetValidUser(user);
+            
+            if (validUser!=null)
             {
-                var tokenString=GenerateJWTToken(user.Login);
+                var tokenString=GenerateJWTToken(validUser);
                 return Ok(new {Token=tokenString, Message="Succes"});
             }
             return BadRequest("Invalid Username or Pass");
         }
 
         //исправить на юзера из бд
-        private string GenerateJWTToken(string userName)
+        private string GenerateJWTToken(User user)
         {
             var claims = new List<Claim>();
-            claims.Add(new Claim(ClaimTypes.Name, userName));
+            claims.Add(new Claim(ClaimTypes.Name, user.Login));
+            claims.Add(new Claim(ClaimTypes.Email, user.Email));
 
             var singingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
 

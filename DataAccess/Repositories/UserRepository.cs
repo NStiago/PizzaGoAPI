@@ -20,5 +20,10 @@ namespace PizzaGoAPI.DataAccess.Repositories
             else
                 return false;
         }
+
+        public async Task<User> GetValidUser(UserAuth user)
+        {
+            return await _context.Users.FirstOrDefaultAsync(x => x.Login == user.Login && x.Password == user.Password);
+        }
     }
 }
