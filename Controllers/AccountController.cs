@@ -42,7 +42,7 @@ namespace PizzaGoAPI.Controllers
                 var tokenString = GenerateJWTToken(validUser);
                 return Ok(new { Token = tokenString, Message = "Succes" });
             }
-            return BadRequest("Invalid Username or Pass");
+            return Unauthorized("Invalid Username or Pass");
         }
         [HttpPost]
         [Route("signup")]
