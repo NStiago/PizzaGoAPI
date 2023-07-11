@@ -26,13 +26,20 @@ namespace PizzaGoAPI.Controllers
             _unitOfWork = unitOfWork;
             _mapper = mapper;
         }
+
+
+        [HttpGet]
+        [Route("admin")]
+        [Authorize(Policy ="IsAdmin")]
+        public IActionResult CheckAdminValidate()
+        {
+            return Ok("API is validated. You are Admin!");
+        }
+
         [HttpGet]
         [Authorize]
-        public IActionResult GetToken()
+        public IActionResult CheckUserAuthorize()
         {
-            var isAdmin = Convert.ToBoolean(User.Claims.FirstOrDefault(claim => claim.Type == "IsAdmin").Value);
-            if(isAdmin)
-                return Ok("API is validated. You are Admin!");
             return Ok("API is validated. You Are User!");
         }
 
@@ -43,7 +50,7 @@ namespace PizzaGoAPI.Controllers
             if (validUser != null)
             {
                 var tokenString = GenerateJWTToken(validUser);
-                return Ok(new { Token = tokenString, Message = "Succes" });
+                return Ok(tokenString);
             }
             return Unauthorized("Invalid Username or Pass");
         }

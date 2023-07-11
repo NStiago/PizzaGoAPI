@@ -53,7 +53,13 @@ namespace PizzaGoAPI
                 ValidateIssuerSigningKey=true
             });
 
-            builder.Services.AddAuthorization();
+            builder.Services.AddAuthorization(options =>
+            {
+            options.AddPolicy("IsAdmin", policy => {
+                policy.RequireAuthenticatedUser();
+                policy.RequireClaim("IsAdmin", "True");
+            });
+            });
 
             // Learn more about configuring Swagger/OpenAPI at https://aka.ms/aspnetcore/swashbuckle
             builder.Services.AddEndpointsApiExplorer();
