@@ -30,7 +30,10 @@ namespace PizzaGoAPI.Controllers
         [Authorize]
         public IActionResult GetToken()
         {
-            return Ok("API is validated");
+            var isAdmin = Convert.ToBoolean(User.Claims.FirstOrDefault(claim => claim.Type == "IsAdmin").Value);
+            if(isAdmin)
+                return Ok("API is validated. You are Admin!");
+            return Ok("API is validated. You Are User!");
         }
 
         [HttpPost]
@@ -63,6 +66,8 @@ namespace PizzaGoAPI.Controllers
             var claims = new List<Claim>();
             claims.Add(new Claim(ClaimTypes.Name, user.Login));
             claims.Add(new Claim(ClaimTypes.Email, user.Email));
+            //!!! доработать с учетом создания ролей и переработки структуры БД !!!
+            claims.Add(new Claim("IsAdmin", user.IsAdmin.ToString()));
 
             var singingKey = new SymmetricSecurityKey(Encoding.UTF8.GetBytes(_options.SecretKey));
 
