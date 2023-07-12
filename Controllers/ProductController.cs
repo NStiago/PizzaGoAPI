@@ -57,6 +57,7 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpPost]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<ActionResult<ProductDTO>> CreateProduct(int categoryId, ProductDTOForCreation product)
         {
             if (!await _unitOfWork.Categories.CategoryExistAsync(categoryId))
@@ -81,6 +82,7 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpPut("{productId}")]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<ActionResult> UpdateProduct(int categoryId, int productId, ProductDTOForCreation inputProduct)
         {
             if (!await _unitOfWork.Categories.CategoryExistAsync(categoryId))
@@ -101,6 +103,7 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpPatch("{productId}")]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<ActionResult> PartiallyUpdateProduct(int categoryId, int productId,
             JsonPatchDocument<ProductDTOForCreation> inputJsonPatch)
         {
@@ -126,6 +129,7 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpDelete("{productId}")]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<ActionResult> DeleteProduct(int categoryId, int productId)
         {
             if (!await _unitOfWork.Categories.CategoryExistAsync(categoryId))

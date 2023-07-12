@@ -59,6 +59,7 @@ namespace PizzaGoAPI.Controllers
 
         }
         [HttpPost]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<ActionResult<CategoryDTOWithoutProduct>> CreateCategory(CategoryDTOForCreation inputCategory)
         {
             var resultCategory = _mapper.Map<Category>(inputCategory);
@@ -78,6 +79,7 @@ namespace PizzaGoAPI.Controllers
             returnCategory);
         }
         [HttpPut("{id}")]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<ActionResult> UpdateCategory(int id, CategoryDTOForCreation inputCategory)
         {
             var categoryForUpdate = await _unitOfWork.Categories.GetAsync(id);
@@ -94,6 +96,7 @@ namespace PizzaGoAPI.Controllers
         }
 
         [HttpDelete("{id}")]
+        [Authorize(Policy = "IsAdmin")]
         public async Task<ActionResult> DeleteCategory(int id)
         {
             
