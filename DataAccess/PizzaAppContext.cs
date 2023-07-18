@@ -10,6 +10,7 @@ namespace PizzaGoAPI.DBContext
         public DbSet<CategorySize> CategorySizes { get; set; }
         public DbSet<AddedIngridient> AddedIngridients { get; set; }
         public DbSet<User> Users { get; set; }
+        public DbSet<CartItem> CartItems { get; set; }
 
         public PizzaAppContext(DbContextOptions<PizzaAppContext> options) : base(options)
         {
